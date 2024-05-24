@@ -1,0 +1,15 @@
+ktor:
+    application:
+        modules:
+            - app.netlify.carolineandrade.ApplicationKt.module
+    deployment:
+        port: 8080
+jwt:
+  domain: "https://jwt-provider-domain/"
+  audience: "jwt-audience"
+  realm: "ktor sample app"
+db:
+  url: "jdbc:postgresql://localhost:5432/neptune"
+  user: "root"
+  password: "postgres"
+  pool: 2
