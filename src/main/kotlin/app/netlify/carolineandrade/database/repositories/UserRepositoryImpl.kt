@@ -42,9 +42,11 @@ class UserRepositoryImpl: UserRepository {
             ?.let(::resultRowToUser)
     }
 
-    override suspend fun edit(user: User): Boolean = dbQuery {
-        UserTable.update({ id eq user.id!! }) {
-            it[id] = user.id!!
+    override suspend fun edit(
+        idToUpdate: Int,
+        user: User,
+    ): Boolean = dbQuery {
+        UserTable.update({ id eq idToUpdate }) {
             it[firstName] = user.firstName
             it[lastName] = user.lastName
             it[email] = user.email

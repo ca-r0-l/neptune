@@ -2,12 +2,9 @@ package app.netlify.carolineandrade.services.users.interfaces
 
 import app.netlify.carolineandrade.models.User
 
-interface UserCreationService {
+interface UserService {
     suspend fun create(
-        firstName: String,
-        lastName: String,
-        email: String,
-        password: String,
+        user: User,
     ): User?
 
     suspend fun getAll(): List<User>
@@ -15,4 +12,13 @@ interface UserCreationService {
     suspend fun getById(
         id: Int,
     ): User?
+
+    suspend fun delete(
+        id: Int,
+    ): Boolean
+
+    suspend fun update(
+        id: Int,
+        user: User,
+    ): Boolean
 }

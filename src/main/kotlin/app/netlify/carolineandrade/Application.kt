@@ -5,7 +5,7 @@ import app.netlify.carolineandrade.database.DatabaseSingleton
 import app.netlify.carolineandrade.database.repositories.UserRepositoryImpl
 import app.netlify.carolineandrade.plugins.configureRouting
 import app.netlify.carolineandrade.plugins.configureSecurity
-import app.netlify.carolineandrade.services.users.UserCreationServiceImpl
+import app.netlify.carolineandrade.services.users.UserServiceImpl
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -22,8 +22,8 @@ fun Application.module() {
     DatabaseSingleton.init(environment)
 
     val userRepository = UserRepositoryImpl()
-    val userCreationService = UserCreationServiceImpl(userRepository)
-    val userController = UserController(userCreationService)
+    val userService = UserServiceImpl(userRepository)
+    val userController = UserController(userService)
 
     configureSecurity()
     configureRouting(userController)

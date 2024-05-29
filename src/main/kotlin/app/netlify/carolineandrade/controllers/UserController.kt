@@ -1,61 +1,62 @@
 package app.netlify.carolineandrade.controllers
 
 import app.netlify.carolineandrade.models.User
-import app.netlify.carolineandrade.services.users.interfaces.UserCreationService
+import app.netlify.carolineandrade.services.users.interfaces.UserService
 import kotlinx.serialization.Serializable
-import java.util.UUID
 
 class UserController(
-    private val userCreationService: UserCreationService,
+    private val userService: UserService,
 ) {
     suspend fun create(
         userRequest: UserRequest,
     ): UserResponse? =
-        userCreationService.create(
-            userRequest.firstName,
-            userRequest.lastName,
-            userRequest.email,
-            userRequest.password,
-        )?.let {
-            println("==>" + it)
-            UserResponse(
-                id = it.id.toString(),
-                firstName = it.firstName,
-                lastName = it.lastName,
-                email = it.email,
-                password = it.password,
-            )
-        }
+        userService.create(
+            userRequest.toModel()
+        )?.toResponse()
 
     suspend fun getAll(): List<UserResponse> =
-        userCreationService
+        userService
             .getAll()
             .map {
-                UserResponse(
-                    id = it.id.toString(),
-                    firstName = it.firstName,
-                    lastName = it.lastName,
-                    email = it.email,
-                    password = it.password,
-                )
+                it.toResponse()
             }
 
     suspend fun getById(
         id: Int,
     ): UserResponse =
-        userCreationService
-            .getById(id)
-            .takeIf { it != null }
-            .let {
-                UserResponse(
-                    id = it!!.id.toString(),
-                    firstName = it.firstName,
-                    lastName = it.lastName,
-                    email = it.email,
-                    password = it.password,
-                )
-            }
+        userService
+        .getById(id)
+        .takeIf { it != null }!!
+        .toResponse()
+
+    suspend fun delete(
+        id: Int,
+    ): Boolean =
+        userService.delete(id)
+
+    suspend fun update(
+        id: String,
+        userRequest: UserRequest,
+    ): Boolean =
+        userService.update(id.toInt(), userRequest.toModel())
 }
+
+private fun UserRequest.toModel(): User =
+    User(
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        password = password,
+    )
+
+private fun User.toResponse(): UserResponse =
+    UserResponse(
+        id = id.toString(),
+        firstName = firstName,
+        lastName = lastName,
+        email = email,
+        password = password,
+    )
 
 @Serializable
 data class UserRequest(

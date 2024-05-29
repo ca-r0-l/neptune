@@ -9,7 +9,7 @@ interface UserRepository {
 
     suspend fun getById(id: Int): User?
 
-    suspend fun edit(user: User): Boolean
+    suspend fun edit(id: Int, user: User): Boolean
 
     suspend fun delete(id: Int): Boolean
 }
