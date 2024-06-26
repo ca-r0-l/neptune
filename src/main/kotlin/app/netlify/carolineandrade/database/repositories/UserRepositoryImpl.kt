@@ -61,6 +61,13 @@ class UserRepositoryImpl: UserRepository {
         UserTable.deleteWhere { UserTable.id eq id } > 0
     }
 
+    override suspend fun getByEmail(email: String): User? = dbQuery {
+        UserTable
+            .select { UserTable.email eq email }
+            .map(::resultRowToUser)
+            .singleOrNull()
+    }
+
     override suspend fun getAll(): List<User> = dbQuery {
         UserTable
             .selectAll()

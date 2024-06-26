@@ -26,4 +26,7 @@ class UserServiceImpl(
         user: User,
     ): Boolean =
         userRepository.edit(id, user)
+
+    override suspend fun getByEmail(email: String): User? =
+        userRepository.getByEmail(email)
 }

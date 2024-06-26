@@ -2,6 +2,8 @@ package app.netlify.carolineandrade.controllers
 
 import app.netlify.carolineandrade.BaseControllerTest
 import app.netlify.carolineandrade.plugins.configureRouting
+import app.netlify.carolineandrade.plugins.configureSecurity
+import app.netlify.carolineandrade.services.JwtService
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
@@ -19,6 +21,7 @@ import kotlin.test.assertEquals
 
 class UserControllerTest: BaseControllerTest() {
     private val userController: UserController = mockk()
+    private val jwtService: JwtService = mockk()
 
     private val usersResponse = listOf(
         UserResponse(
@@ -33,7 +36,11 @@ class UserControllerTest: BaseControllerTest() {
     @BeforeTest
     fun setup() {
         moduleList = {
-            configureRouting(userController)
+            configureRouting(
+                userController,
+                jwtService,
+            )
+            configureSecurity(jwtService)
         }
     }
 

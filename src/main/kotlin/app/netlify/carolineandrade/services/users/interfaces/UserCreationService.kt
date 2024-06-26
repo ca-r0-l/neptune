@@ -21,4 +21,8 @@ interface UserService {
         id: Int,
         user: User,
     ): Boolean
+
+    suspend fun getByEmail(
+        email: String,
+    ): User?
 }

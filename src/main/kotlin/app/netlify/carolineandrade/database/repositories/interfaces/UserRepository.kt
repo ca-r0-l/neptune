@@ -12,4 +12,6 @@ interface UserRepository {
     suspend fun edit(id: Int, user: User): Boolean
 
     suspend fun delete(id: Int): Boolean
+
+    suspend fun getByEmail(email: String): User?
 }
